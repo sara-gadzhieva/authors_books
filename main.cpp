@@ -4,7 +4,6 @@
 using namespace std;
 class book;
 class author {
-	public:
 	char f[30], i[30], o[30];
 	int g;
 	public:
@@ -17,14 +16,21 @@ class author {
 		}
 		
 	///конструктор (с параметрами):
-	author(char* f2,char* i2,char* o2,int g2): g(g2) {
-		for(int j=0;j<30;j++) {
+	author(char* f2,char* i2,char* o2,int g2):g(g2) {
+		int j;
+		for (j=0;j<29 && f2[j]!='\0'; j++) {
 			f[j]=f2[j];
-			i[j]=i2[j];
-			o[j]=o2[j]; 
 			}
+		f[j]='\0';
+		for (j=0;j<29 && i2[j]!='\0';j++) {
+			i[j]=i2[j];
+			}
+		i[j]='\0';
+		for (j=0;j<29 && o2[j]!='\0'; ++j) {
+			o[j]=o2[j];
+			}
+		o[j]='\0';
 		}
-		
 	///конструктор копирования:
 	author(const author &obb):g(obb.g) {
 		for (int j=0;j<30;j++) {
@@ -44,24 +50,30 @@ class author {
 	
 	///оператор сравнения
 	bool operator==(const author &ob) const {
-		for (int j=0;j<30;j++) {
-			if(f[j]=='\0'||i[j]=='\0'||o[j]=='\0')
-			{
-				break;
+		int j=0;
+		while (f[j]!='\0' || ob.f[j]!='\0') {
+			if (f[j]!=ob.f[j]) {
+				return false;
+				}
+			j++;
+			}	
+		j=0;
+		while (i[j]!='\0' || ob.i[j]!='\0') {
+			if (i[j]!=ob.i[j]) {
+				return false;
+				}
+			j++;
 			}
-			if(f[j]!=ob.f[j]) {
+		j=0;
+		while (o[j]!='\0' || ob.o[j]!='\0') {
+			if (o[j]!=ob.o[j]) {
 				return false;
 				}
-			if(i[j]!=ob.i[j]) {
-				return false;
-				}
-			if(o[j]!=ob.o[j]) {
-				return false;
-				}
+			j++;
 			}
 		return true;
 		}
-		
+
 	///оператор присваивания	
 	author &operator=(const author &ob) {
 		if (this!=&ob) {
@@ -91,7 +103,6 @@ class author {
 	};
 	
 class book {
-	public: ///пока что паблик
 	char name[30];
 	int author_count, page_count, year;
 	author*authors;
@@ -145,7 +156,7 @@ class book {
 			authors[i]=obb.authors[i];
 			}
 		return *this;
-		}
+		}	
 
 	///деструктор:
 	~book() {
@@ -158,9 +169,8 @@ class book {
 		cout<<"количество страниц: "<<page_count<<endl;
 		cout<<"год издания: "<<year<<endl;
 		cout<<"авторы: "<<endl;
-		for(int i=0; i<author_count;i++) {
-			cout<<authors[i].get_i()<<endl;
-			///cout << endl;
+		for (int i=0;i<author_count;i++) {
+			cout<<authors[i].get_f()<<" "<< authors[i].get_i()<<" "<<authors[i].get_o()<<endl;
 		}
 	}
 	
@@ -214,8 +224,8 @@ book* book_list(book *books,int n,author a) {
 	book *books_a=new book[book_count(books,n,a)];
 	int c=0;
 	for(int j=0;j<n;j++){
-		for(int i=0;i<books[j].author_count;i++) {
-			if(books[j].authors[i]==a) {
+		for(int i=0;i<books[j].get_author_count();i++) {
+			if(books[j].get_authors()[i]==a) {
 				books_a[c++]=books[j];
 				}
 			}
@@ -223,7 +233,7 @@ book* book_list(book *books,int n,author a) {
 		return books_a;
 	}
 
-int main (){
+int main () {
 	ifstream fin1("authors.txt");
 	ifstream fin2("books.txt");
 	if (!fin1.is_open()) {
@@ -246,31 +256,76 @@ int main (){
 	int book_count2;
 	fin2>>book_count2;
 	book*books=new book[book_count2];
-	///int real_book_count=0;
+	int real_book_count=0;
 	for (int i=0;i<book_count2;i++) {
-		char name2[30]; int page_count2, year2, count2;
-		 ///count2 - количество авторов книги
+		char name2[30];
+		int page_count2, year2, count2;
 		fin2>>name2>>page_count2>>year2>>count2;
 		author* temp_authors=new author[count2];
-		for(int j = 0; j < count2;j++) {
-			char a_f[30],a_i[30],a_o[30];
+		bool no_author=false;        
+		for (int j=0;j<count2;j++) {
+			char a_f[30], a_i[30], a_o[30];
 			fin2>>a_f>>a_i>>a_o;
-			temp_authors[j] = author(a_f, a_i, a_o, 0);
+			///проверка на наличие автора
+			bool found=false;
+			author prob(a_f,a_i,a_o,0); ///для того чтобы сравнить
+			for (int k=0;k<author_count2;k++) {
+				if(authors[k]==prob) {
+					temp_authors[j]=authors[k];
+					found=true;
+					break;
+					}
+				}	
+			if (!found) {
+				cout<<"автор "<<a_f<<" "<<a_i<<" "<<a_o<<" не найден в файле authors.txt. книга пропущена\n";
+				no_author=true;
+				}
+		}
+		if (no_author) {         
+			delete[] temp_authors;
+			continue;
 			}
-		book booka(name2,count2,page_count2,year2,temp_authors);
-		books[i]=booka;
+
+		///проверка на повторение автора
+		bool dubl_authors=false;
+		for (int a=0;a<count2 && !dubl_authors;a++) {
+			for (int b=a+1; b<count2;b++) {
+				if (temp_authors[a]==temp_authors[b]) { 
+					dubl_authors=true; 
+					break; 
+					}
+				}
+			}
+		if (dubl_authors) {
+			cout<<"в книге указаны одинаковые авторы. книга пропущена\n";
+			delete[] temp_authors;
+			continue;
+		}
+
+		///проверка на повторение названия
+		bool dubl_name=false;
+		for (int t=0; t<real_book_count && !dubl_name;t++) {
+			bool same=true;
+			for(int x=0;books[t].get_name()[x]!='\0' || name2[x]!='\0';x++) {
+				if (books[t].get_name()[x] != name2[x]) { 
+					same=false; 
+					break; 
+					}
+				}
+			if (same) {
+				dubl_name=true;
+				}
+			}
+		if (dubl_name) {
+			cout<<"книга с таким названием уже есть. книга пропущена\n";
+			delete[] temp_authors;
+			continue;
+		}
+
+		books[real_book_count++]=book(name2, count2, page_count2, year2, temp_authors);
 		delete[] temp_authors;
 	}
-	/*for(int i=0;i<book_count2;i++)
-	{
-		for(int j=0;j<book_count2;j++)
-		{
-			if(books[i]==books[j])
-			{
-				
-			}
-		}
-	}*/
+
 	int num;
 	do {
 		cout<<"1 - вывод подробной информации обо всех книгах"<<endl;
@@ -282,7 +337,7 @@ int main (){
 		cin>>num;
 		switch(num){
 			case 1: {
-			for(int j=0;j<book_count2;j++) {
+			for(int j=0;j<real_book_count;j++) {
 				books[j].show();
 				}
 			break;
@@ -294,16 +349,15 @@ int main (){
 			break;
 			}
 			case 3: {
-				int c_max=book_count(books,book_count2,authors[0]);
+				int c_max=book_count(books,real_book_count,authors[0]);
 				author author_max=authors[0];
 				for(int i=0;i<author_count2;i++){
-					if(book_count(books,book_count2,authors[i])>c_max){
-						c_max=book_count(books,book_count2,authors[i]);
+					if(book_count(books,real_book_count,authors[i])>c_max){
+						c_max=book_count(books,real_book_count,authors[i]);
 						author_max=authors[i];
 						}
 					}
 				author_max.show();
-			
 				break;
 			}
 			case 4: {
@@ -312,9 +366,9 @@ int main (){
 				cin>>f3>>i3>>o3;
 				author target(f3,i3,o3,0);
 				bool flag=false;
-				for (int i=0;i<book_count(books,book_count2,target);i++){
-					flag = true;
-					cout<<book_list(books,book_count2,target)[i].get_name()<<endl;
+				for (int i=0;i<book_count(books,real_book_count,target);i++){
+					flag=true;
+					cout<<book_list(books,real_book_count,target)[i].get_name()<<endl;
 					}
 				if(!flag) {
 					cout<<"книг этого автора нет"<<endl;
@@ -326,7 +380,7 @@ int main (){
 				cout<<"введите год: "<<endl;
 				cin>>target_year;
 				bool flag=false;
-				for(int i=0;i<book_count2;i++) {
+				for(int i=0;i<real_book_count;i++) {
 					if(books[i].get_year()==target_year) {
 						cout<<books[i].get_name()<<endl;
 						flag=true;
