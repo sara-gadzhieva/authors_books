@@ -1,21 +1,22 @@
 #include <iostream>
 #include <fstream>
-#include <string>
+
 using namespace std;
 class book;
 class author {
+	public:
 	char f[30], i[30], o[30];
 	int g;
 	public:
 	
-	///™Æ≠·‚‡„™‚Æ‡ (°•ß Ø†‡†¨•‚‡Æ¢):
+	///–∫–æ–Ω—Å—Ç—Ä—É–∫—Ç–æ—Ä (–±–µ–∑ –ø–∞—Ä–∞–º–µ—Ç—Ä–æ–≤):
 	author():g(0) {
 		f[0]='\0';
 		i[0]='\0';
 		o[0]='\0';
 		}
 		
-	///™Æ≠·‚‡„™‚Æ‡ (· Ø†‡†¨•‚‡†¨®):
+	///–∫–æ–Ω—Å—Ç—Ä—É–∫—Ç–æ—Ä (—Å –ø–∞—Ä–∞–º–µ—Ç—Ä–∞–º–∏):
 	author(char* f2,char* i2,char* o2,int g2): g(g2) {
 		for(int j=0;j<30;j++) {
 			f[j]=f2[j];
@@ -24,7 +25,7 @@ class author {
 			}
 		}
 		
-	///™Æ≠·‚‡„™‚Æ‡ ™ÆØ®‡Æ¢†≠®Ô:
+	///–∫–æ–Ω—Å—Ç—Ä—É–∫—Ç–æ—Ä –∫–æ–ø–∏—Ä–æ–≤–∞–Ω–∏—è:
 	author(const author &obb):g(obb.g) {
 		for (int j=0;j<30;j++) {
 			f[j]=obb.f[j];
@@ -33,17 +34,21 @@ class author {
 		}
 	}
 	
-	///§•·‚‡„™‚Æ‡:
+	///–¥–µ—Å—Ç—Ä—É–∫—Ç–æ—Ä:
 	~author() {}
 	
-	///‰„≠™Ê®Ô ¢Î¢Æ§†:
+	///—Ñ—É–Ω–∫—Ü–∏—è –≤—ã–≤–æ–¥–∞:
 	void show() const {
-		cout<<f<<" "<<i<<" "<<o<<", "<<g<<" £Æ§† ‡Æ¶§•≠®Ô"<<endl;
+		cout<<f<<" "<<i<<" "<<o<<", "<<g<<" –≥–æ–¥–∞ —Ä–æ–∂–¥–µ–Ω–∏—è"<<endl;
 		}
 	
-	///ÆØ•‡†‚Æ‡ ·‡†¢≠•≠®Ô
+	///–æ–ø–µ—Ä–∞—Ç–æ—Ä —Å—Ä–∞–≤–Ω–µ–Ω–∏—è
 	bool operator==(const author &ob) const {
 		for (int j=0;j<30;j++) {
+			if(f[j]=='\0'||i[j]=='\0'||o[j]=='\0')
+			{
+				break;
+			}
 			if(f[j]!=ob.f[j]) {
 				return false;
 				}
@@ -57,7 +62,7 @@ class author {
 		return true;
 		}
 		
-	///ÆØ•‡†‚Æ‡ Ø‡®·¢†®¢†≠®Ô	
+	///–æ–ø–µ—Ä–∞—Ç–æ—Ä –ø—Ä–∏—Å–≤–∞–∏–≤–∞–Ω–∏—è	
 	author &operator=(const author &ob) {
 		if (this!=&ob) {
 			for(int j=0;j<30;j++) {
@@ -70,7 +75,7 @@ class author {
 		return *this;
 	}
 	
-	///£•‚‚•‡Î:
+	///–≥–µ—Ç—Ç–µ—Ä—ã:
 	const char* get_f() const { 
 		return f; 
 		}
@@ -86,18 +91,18 @@ class author {
 	};
 	
 class book {
-	public: ///ØÆ™† Á‚Æ Ø†°´®™
+	public: ///–ø–æ–∫–∞ —á—Ç–æ –ø–∞–±–ª–∏–∫
 	char name[30];
 	int author_count, page_count, year;
 	author*authors;
 	public:
 	
-	///™Æ≠·‚‡„™‚Æ‡ (°•ß Ø†‡†¨•‚‡Æ¢):
+	///–∫–æ–Ω—Å—Ç—Ä—É–∫—Ç–æ—Ä (–±–µ–∑ –ø–∞—Ä–∞–º–µ—Ç—Ä–æ–≤):
 	book():author_count(0), page_count(0), year(0),authors(nullptr){
 		name[0]='\0';
 		}
 	
-	///™Æ≠·‚‡„™‚Æ‡ (· Ø†‡†¨•‚‡†¨®):
+	///–∫–æ–Ω—Å—Ç—Ä—É–∫—Ç–æ—Ä (—Å –ø–∞—Ä–∞–º–µ—Ç—Ä–∞–º–∏):
 	book(char *name2, int author_count2, int page_count2, int year2, author *authors2):author_count(author_count2), page_count(page_count2), year(year2), authors(nullptr){
 		int j;
 		for(j=0;j<29&&name2[j]!='\0';j++) {
@@ -110,7 +115,7 @@ class book {
 			}
 		} 
 	
-	///™Æ≠·‚‡„™‚Æ‡ ™ÆØ®‡Æ¢†≠®Ô:
+	///–∫–æ–Ω—Å—Ç—Ä—É–∫—Ç–æ—Ä –∫–æ–ø–∏—Ä–æ–≤–∞–Ω–∏—è:
 	book(const book &obb): author_count(obb.author_count), page_count(obb.page_count), year(obb.year), authors(nullptr){
 		int j;
 		for(j=0;j<29&&obb.name[j]!='\0';j++) {
@@ -123,7 +128,7 @@ class book {
 			}
 	}
 	
-	///ÆØ•‡†‚Æ‡ Ø‡®·¢†®¢†≠®Ô:
+	///–æ–ø–µ—Ä–∞—Ç–æ—Ä –ø—Ä–∏—Å–≤–∞–∏–≤–∞–Ω–∏—è:
 	book &operator=(const book &obb) {
 		if(this==&obb) {
 			return *this;
@@ -142,24 +147,24 @@ class book {
 		return *this;
 		}
 
-	///§•·‚‡„™‚Æ‡:
+	///–¥–µ—Å—Ç—Ä—É–∫—Ç–æ—Ä:
 	~book() {
 		delete[] authors;
 		}
 		
-	///‰„≠™Ê®Ô ¢Î¢Æ§†:
+	///—Ñ—É–Ω–∫—Ü–∏—è –≤—ã–≤–æ–¥–∞:
 	void show() const {
-		cout<<"≠†ß¢†≠®• ™≠®£®: "<<name<<endl;
-		cout<<"™Æ´®Á•·‚¢Æ ·‚‡†≠®Ê: "<<page_count<<endl;
-		cout<<"£Æ§ ®ß§†≠®Ô: "<<year<<endl;
-		cout<<"†¢‚Æ‡Î: "<<endl;
+		cout<<"–Ω–∞–∑–≤–∞–Ω–∏–µ –∫–Ω–∏–≥–∏: "<<name<<endl;
+		cout<<"–∫–æ–ª–∏—á–µ—Å—Ç–≤–æ —Å—Ç—Ä–∞–Ω–∏—Ü: "<<page_count<<endl;
+		cout<<"–≥–æ–¥ –∏–∑–¥–∞–Ω–∏—è: "<<year<<endl;
+		cout<<"–∞–≤—Ç–æ—Ä—ã: "<<endl;
 		for(int i=0; i<author_count;i++) {
-			authors[i].show();
-			cout<<endl;
+			cout<<authors[i].get_i()<<endl;
+			///cout << endl;
 		}
 	}
 	
-	///ÆØ•‡†‚Æ‡ ·‡†¢≠•≠®Ô
+	///–æ–ø–µ—Ä–∞—Ç–æ—Ä —Å—Ä–∞–≤–Ω–µ–Ω–∏—è
 	bool operator==(const book &ob2) const {
 		for(int j=0;name[j]!='\0' || ob2.name[j]!='\0';j++){
 			if(name[j]!=ob2.name[j]) {
@@ -169,7 +174,7 @@ class book {
 		return true;
 		}
 	
-	///£•‚‚•‡Î:
+	///–≥–µ—Ç—Ç–µ—Ä—ã:
 	const char* get_name() const {
 		return name;
 		}
@@ -217,17 +222,16 @@ book* book_list(book *books,int n,author a) {
 		}
 		return books_a;
 	}
-	
-	
+
 int main (){
 	ifstream fin1("authors.txt");
 	ifstream fin2("books.txt");
 	if (!fin1.is_open()) {
-		cout<<"‰†©´ authors.txt ≠• Æ‚™‡Î´·Ô"<<endl;
+		cout<<"—Ñ–∞–π–ª authors.txt –Ω–µ –æ—Ç–∫—Ä—ã–ª—Å—è"<<endl;
 		return 1;
 		}
 	if (!fin2.is_open()) {
-		cout<<"‰†©´ books.txt ≠• Æ‚™‡Î´·Ô"<<endl;
+		cout<<"—Ñ–∞–π–ª books.txt –Ω–µ –æ—Ç–∫—Ä—ã–ª—Å—è"<<endl;
 		return 2;
 	}
 	int author_count2;
@@ -245,7 +249,7 @@ int main (){
 	///int real_book_count=0;
 	for (int i=0;i<book_count2;i++) {
 		char name2[30]; int page_count2, year2, count2;
-		 ///count2 - ™Æ´®Á•·‚¢Æ †¢‚Æ‡Æ¢ ™≠®£®
+		 ///count2 - –∫–æ–ª–∏—á–µ—Å—Ç–≤–æ –∞–≤—Ç–æ—Ä–æ–≤ –∫–Ω–∏–≥–∏
 		fin2>>name2>>page_count2>>year2>>count2;
 		author* temp_authors=new author[count2];
 		for(int j = 0; j < count2;j++) {
@@ -256,43 +260,25 @@ int main (){
 		book booka(name2,count2,page_count2,year2,temp_authors);
 		books[i]=booka;
 		delete[] temp_authors;
-		///1
-		/*bool dubl=false;
-		for(int j=0;j<real_book_count;j++) {
-			bool same=true;
-			for(int h=0;h<30;h++) {
-				if(books[j].get_name()[h]!=name2[h]) {
-					same=false;
-					break;
-					}
-				}
-				if(same==true) {
-					cout<<"™≠®£† · ≠†ß¢†≠®•¨, ™Æ‚Æ‡Æ• „¶• ¢·‚‡•Á†´Æ·Ï ‡†≠≠••"<<endl;
-					dubl=true;
-					break;
-					}
+	}
+	/*for(int i=0;i<book_count2;i++)
+	{
+		for(int j=0;j<book_count2;j++)
+		{
+			if(books[i]==books[j])
+			{
+				
 			}
-			if(dubl==true) {
-				for(int u=0;u<count2;u++) {
-					char ff[30], ii[30], oo[30];
-					fin2>>ff>>ii>>oo;
-					}
-					continue;
-				}*/
 		}
-	
-	
+	}*/
 	int num;
-	for(int i = 0;i < book_count2;i++) {
-		cout << books[i].get_name()<<endl;
-		}
 	do {
-		cout<<"1 - ¢Î¢Æ§ ØÆ§‡Æ°≠Æ© ®≠‰Æ‡¨†Ê®® Æ°Æ ¢·•Â ™≠®£†Â"<<endl;
-		cout<<"2 - ¢Î¢Æ§ ØÆ§‡Æ°≠Æ© ®≠‰Æ‡¨†Ê®® Æ°Æ ¢·•Â †¢‚Æ‡†Â"<<endl;
-		cout<<"3 - ¢Î¢Æ§ †¢‚Æ‡Æ¢ · ≠†®°Æ´ÏË®¨ ™Æ´®Á•·‚¢Æ¨ ™≠®£"<<endl;
-		cout<<"4 - ¢Î¢Æ§ ¢·•Â ™≠®£ „™†ß†≠≠Æ£Æ †¢‚Æ‡†"<<endl;
-		cout<<"5 - ¢Î¢Æ§ ¢·•Â ™≠®£, ¢ÎØ„È•≠≠ÎÂ ¢ „™†ß†≠≠Î© £Æ§"<<endl;
-		cout<<"0 - ¢ÎÂÆ§ ®ß Ø‡Æ£‡†¨¨Î"<<endl;
+		cout<<"1 - –≤—ã–≤–æ–¥ –ø–æ–¥—Ä–æ–±–Ω–æ–π –∏–Ω—Ñ–æ—Ä–º–∞—Ü–∏–∏ –æ–±–æ –≤—Å–µ—Ö –∫–Ω–∏–≥–∞—Ö"<<endl;
+		cout<<"2 - –≤—ã–≤–æ–¥ –ø–æ–¥—Ä–æ–±–Ω–æ–π –∏–Ω—Ñ–æ—Ä–º–∞—Ü–∏–∏ –æ–±–æ –≤—Å–µ—Ö –∞–≤—Ç–æ—Ä–∞—Ö"<<endl;
+		cout<<"3 - –≤—ã–≤–æ–¥ –∞–≤—Ç–æ—Ä–æ–≤ —Å –Ω–∞–∏–±–æ–ª—å—à–∏–º –∫–æ–ª–∏—á–µ—Å—Ç–≤–æ–º –∫–Ω–∏–≥"<<endl;
+		cout<<"4 - –≤—ã–≤–æ–¥ –≤—Å–µ—Ö –∫–Ω–∏–≥ —É–∫–∞–∑–∞–Ω–Ω–æ–≥–æ –∞–≤—Ç–æ—Ä–∞"<<endl;
+		cout<<"5 - –≤—ã–≤–æ–¥ –≤—Å–µ—Ö –∫–Ω–∏–≥, –≤—ã–ø—É—â–µ–Ω–Ω—ã—Ö –≤ —É–∫–∞–∑–∞–Ω–Ω—ã–π –≥–æ–¥"<<endl;
+		cout<<"0 - –≤—ã—Ö–æ–¥ –∏–∑ –ø—Ä–æ–≥—Ä–∞–º–º—ã"<<endl;
 		cin>>num;
 		switch(num){
 			case 1: {
@@ -322,40 +308,39 @@ int main (){
 			}
 			case 4: {
 				char f3[30], i3[30], o3[30];
-				cout<<"¢¢•§®‚• ‰®Æ †¢‚Æ‡†: "<<endl;
+				cout<<"–≤–≤–µ–¥–∏—Ç–µ —Ñ–∏–æ –∞–≤—Ç–æ—Ä–∞: "<<endl;
 				cin>>f3>>i3>>o3;
 				author target(f3,i3,o3,0);
 				bool flag=false;
-				for(int j=0;j<author_count2;j++) {
-				for (int i=0;i<book_count(books,book_count2,authors[j]);i++){
-					book_list(books,book_count2,authors[j])[i].show();
+				for (int i=0;i<book_count(books,book_count2,target);i++){
+					flag = true;
+					cout<<book_list(books,book_count2,target)[i].get_name()<<endl;
 					}
-				}
 				if(!flag) {
-					cout<<"™≠®£ Ì‚Æ£Æ †¢‚Æ‡† ≠•‚"<<endl;
+					cout<<"–∫–Ω–∏–≥ —ç—Ç–æ–≥–æ –∞–≤—Ç–æ—Ä–∞ –Ω–µ—Ç"<<endl;
 					}
 				break;
 			}
 			case 5: {
 				int target_year;
-				cout<<"¢¢•§®‚• £Æ§: "<<endl;
+				cout<<"–≤–≤–µ–¥–∏—Ç–µ –≥–æ–¥: "<<endl;
 				cin>>target_year;
 				bool flag=false;
 				for(int i=0;i<book_count2;i++) {
 					if(books[i].get_year()==target_year) {
-						books[i].show();
+						cout<<books[i].get_name()<<endl;
 						flag=true;
 						}
 					}
 				if(!flag) {
-					cout<<"≠•‚ ™≠®£®, ¢ÎØ„È•≠≠Æ© ¢ Ì‚Æ‚ £Æ§"<<endl;
+					cout<<"–Ω–µ—Ç –∫–Ω–∏–≥–∏, –≤—ã–ø—É—â–µ–Ω–Ω–æ–π –≤ —ç—Ç–æ—Ç –≥–æ–¥"<<endl;
 					}
 				break;
 				}
 			case 0:
 			break;
 			default:
-			cout<<"¢¢•§®‚• Á®·´Æ Æ‚ 0 §Æ 5"<<endl;
+			cout<<"–≤–≤–µ–¥–∏—Ç–µ —á–∏—Å–ª–æ –æ—Ç 0 –¥–æ 5"<<endl;
 			}
 		}
 	while (num!=0);
