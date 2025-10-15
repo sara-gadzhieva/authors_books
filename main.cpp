@@ -443,14 +443,16 @@ int main () {
 				cout<<"введите фио автора: "<<endl;
 				cin>>f3>>i3>>o3;
 				author target(f3,i3,o3,0);
-				bool flag=false;
-				for (int i=0;i<book_count(books,real_book_count,target);i++){
-					flag=true;
-					cout<<book_list(books,real_book_count,target)[i].get_name()<<endl;
-					}
-				if(!flag) {
+				if(book_count(books,real_book_count,target)==0) {
 					cout<<"книг этого автора нет"<<endl;
+					break;
 					}
+				
+				book* list=book_list(books, real_book_count, target);
+				for (int i=0;i<book_count(books,real_book_count,target);i++) {
+					cout<<list[i].get_name()<<endl;
+					}
+				delete[] list;
 				break;
 			}
 			case 5: {
