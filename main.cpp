@@ -253,6 +253,14 @@ int main () {
 		authors[i]=author(f2,i2,o2,g2);
 		}
 	
+	///пример работы конструктора копирования
+	author author2=authors[0]; 
+	cout<<"оригинал: ";
+	authors[0].show();
+	cout<<"копия: ";
+	author2.show();
+	cout<<endl;
+	
 	int book_count2;
 	fin2>>book_count2;
 	book*books=new book[book_count2];
