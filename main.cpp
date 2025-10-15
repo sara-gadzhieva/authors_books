@@ -350,14 +350,16 @@ int main () {
 			}
 			case 3: {
 				int c_max=book_count(books,real_book_count,authors[0]);
-				author author_max=authors[0];
 				for(int i=0;i<author_count2;i++){
 					if(book_count(books,real_book_count,authors[i])>c_max){
 						c_max=book_count(books,real_book_count,authors[i]);
-						author_max=authors[i];
 						}
 					}
-				author_max.show();
+				for(int i=0;i<author_count2;i++){
+					if(book_count(books,real_book_count,authors[i]) == c_max){
+						authors[i].show();
+						}
+					}
 				break;
 			}
 			case 4: {
