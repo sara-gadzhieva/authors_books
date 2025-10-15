@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-
+#include <cstring>
 using namespace std;
 class book;
 class author {
@@ -259,6 +259,12 @@ int main () {
 			delete [] authors;
 			return 2;
 			}
+		if (strlen(f2)>=30 || strlen(i2)>=30 || strlen(o2)>=30) {
+			cout<<"слишком длинное ФИО автора в файле authors.txt"<<endl;
+			delete[] authors;
+			return 3;
+			}
+
 		authors[i]=author(f2,i2,o2,g2);
 		}
 	
@@ -288,6 +294,12 @@ int main () {
 			delete [] books;
 			return 2;
 			}
+		if (strlen(name2)>=30) {
+			cout<<"слишком длинное название книги: "<<name2<<endl;
+			delete[] authors;
+			delete[] books;
+			return 1;
+			}	
 		author* temp_authors=new author[count2];
 		bool no_author=false;        
 		for (int j=0;j<count2;j++) {
