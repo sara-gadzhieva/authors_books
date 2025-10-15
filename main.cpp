@@ -269,12 +269,12 @@ int main () {
 			}
 
 		if (strlen(f2)>=30 || strlen(i2)>=30 || strlen(o2)>=30) {
-			cout<<"слишком длинное ФИО автора в файле authors.txt"<<endl;
+			cout<<"слишком длинное ФИО у автора "<<f2<<" "<<i2<<" "<<o2<<" в файле authors.txt"<<endl;
 			delete[] authors;
 			return 3;
 			}
 			if (ff(f2) || ff(i2) || ff(o2)) {
-				cout<<"в имени автора недопустимые символы"<<endl;
+				cout<<"в имени автора"<<f2<<" "<<i2<<" "<<o2<<" недопустимые символы"<<endl;
 				delete[] authors;
 				return 4;
 				}
@@ -316,27 +316,98 @@ int main () {
 	book*books=new book[book_count2];
 	int real_book_count=0;
 	for (int i=0;i<book_count2;i++) {
-		char name2[30];
+		char name2[30],page[16],yearr[16],countt[16];
 		int page_count2, year2, count2;
-		if(!(fin2>>name2>>page_count2>>year2>>count2)) {
+		if(!(fin2>>name2>>page>>yearr>>countt)) {
 			cout<<"файл содержит меньше книг, чем указано"<<endl;
 			delete [] authors;
 			delete [] books;
 			return 2;
 			}
+			
+		for (int t=0;page[t]!='\0';t++) {
+			if (page[t]<'0' || page[t]>'9') {
+				cout<<"некорректное количество страниц у книги "<<name2<<endl;
+				delete[] authors;
+				delete[] books;
+				return 3;
+				}
+			}
+		for (int t=0;yearr[t]!='\0';t++) {
+			if (yearr[t]<'0' || yearr[t]>'9') {
+				cout<<"некорректный год издания у книги "<<name2<<endl;
+				delete[] authors;
+				delete[] books;
+				return 4;
+				}
+			}
+		for (int t=0;countt[t]!='\0';t++) {
+			if (countt[t]<'0' || countt[t]>'9') {
+				cout<<"некорректное количество авторов у книги "<<name2<<endl;
+				delete[] authors;
+				delete[] books;
+				return 5;
+				}	
+			}
+		page_count2=0;
+		for (int t=0;page[t]!='\0';t++) {
+			page_count2=page_count2*10+(page[t]-'0');
+			}
+		year2=0;
+		for (int t=0;yearr[t]!='\0';t++) {
+			year2=year2*10+(yearr[t]-'0');
+			}
+		count2=0;
+		for (int t=0;countt[t]!='\0';t++) {
+			count2=count2*10+(countt[t]-'0');
+			}
+			
+		if (count2<=0) {
+			cout<<"некорректное число авторов для книги "<<name2<<endl;
+			delete[] authors; 
+			delete[] books;
+			return 3;
+			}
+		if (page_count2<=0) {
+			cout<<"некорректное число страниц у книги "<<name2<<endl;
+			delete[] authors; 
+			delete[] books;
+			return 4;
+			}
+		if (year2<1500 || year2>2026) { 
+			cout<<"некорректный год издания у книги "<<name2<<endl;
+			delete[] authors; 
+			delete[] books;
+			return 5;
+			}
 		if (strlen(name2)>=30) {
 			cout<<"слишком длинное название книги: "<<name2<<endl;
 			delete[] authors;
 			delete[] books;
-			return 1;
+			return 6;
 			}	
 		author* temp_authors=new author[count2];
 		bool no_author=false;        
 		for (int j=0;j<count2;j++) {
 			char a_f[30], a_i[30], a_o[30];
-			fin2>>a_f>>a_i>>a_o;
+			if(!(fin2>>a_f>>a_i>>a_o)) {
+				cout<<"в книге "<<name2<<" меньше авторов, чем указано"<<endl;
+				delete[] temp_authors;
+				delete[] authors; 
+				delete[] books;
+				return 5;
+				}
+				
+				
+			    if (strlen(a_f)>=30 || strlen(a_i)>=30 || strlen(a_o)>=30) {
+					cout<<"слишком длинное ФИО автора "<<a_f<<" "<<a_i<<" "<<a_o<<" в books.txt: "<<endl;
+					delete[] temp_authors; 
+					delete[] authors; 
+					delete[] books;
+					return 4;
+					}
 			if (ff(a_f) || ff(a_i) || ff(a_o)) {
-				cout<<"в имени автора недопустимые символы"<<endl;
+				cout<<"в имени автора "<<a_f<<" "<<a_i<<" "<<a_o<<" недопустимые символы"<<endl;
 				delete[] temp_authors;
 				delete[] authors;
 				delete[] books;
@@ -401,8 +472,8 @@ int main () {
 		books[real_book_count++]=book(name2, count2, page_count2, year2, temp_authors);
 		delete[] temp_authors;
 	}
-
 	int num;
+	char c[10];
 	do {
 		cout<<"1 - вывод подробной информации обо всех книгах"<<endl;
 		cout<<"2 - вывод подробной информации обо всех авторах"<<endl;
@@ -410,7 +481,13 @@ int main () {
 		cout<<"4 - вывод всех книг указанного автора"<<endl;
 		cout<<"5 - вывод всех книг, выпущенных в указанный год"<<endl;
 		cout<<"0 - выход из программы"<<endl;
-		cin>>num;
+
+		cin>>c;
+		if (strlen(c)!=1 || c[0]<'0' || c[0]>'5') {
+			cout<<"введите число от 0 до 5"<<endl;
+			continue;
+		}
+		num=c[0]-'0'; 
 		switch(num){
 			case 1: {
 			for(int j=0;j<real_book_count;j++) {
@@ -442,6 +519,10 @@ int main () {
 				char f3[30], i3[30], o3[30];
 				cout<<"введите фио автора: "<<endl;
 				cin>>f3>>i3>>o3;
+				if (ff(f3) || ff(i3) || ff(o3)) {
+					cout<<"в ФИО недопустимые символы"<<endl;
+					break;
+					}
 				author target(f3,i3,o3,0);
 				if(book_count(books,real_book_count,target)==0) {
 					cout<<"книг этого автора нет"<<endl;
@@ -456,9 +537,24 @@ int main () {
 				break;
 			}
 			case 5: {
-				int target_year;
+				char godd[16];
 				cout<<"введите год: "<<endl;
-				cin>>target_year;
+				cin>>godd;
+				bool flagg=true;
+				for (int i=0;godd[i]!='\0';i++)
+					if (godd[i]<'0' || godd[i]>'9') { 
+						flagg=false; 
+						break; 
+						}
+				if (!flagg) {
+					cout<<"год должен быть числом"<<endl;
+					break;
+					}
+
+				int target_year=0;
+				for (int i=0;godd[i]!='\0';i++) {
+					target_year=target_year*10 + (godd[i]-'0');
+					}
 				bool flag=false;
 				for(int i=0;i<real_book_count;i++) {
 					if(books[i].get_year()==target_year) {
