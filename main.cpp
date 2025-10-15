@@ -233,6 +233,15 @@ book* book_list(book *books,int n,author a) {
 		return books_a;
 	}
 
+bool ff(const char* s) {
+    for (int t=0; s[t]!='\0';t++) {
+        if (s[t]>='0' && s[t]<='9')
+            return true;
+    }
+    return false;
+}
+
+
 int main () {
 	ifstream fin1("authors.txt");
 	ifstream fin2("books.txt");
@@ -264,6 +273,12 @@ int main () {
 			delete[] authors;
 			return 3;
 			}
+			if (ff(f2) || ff(i2) || ff(o2)) {
+				cout<<"в имени автора недопустимые символы"<<endl;
+				///delete[] temp_authors;
+				delete[] authors;
+				return 4;
+				}
 
 		authors[i]=author(f2,i2,o2,g2);
 		}
@@ -305,6 +320,13 @@ int main () {
 		for (int j=0;j<count2;j++) {
 			char a_f[30], a_i[30], a_o[30];
 			fin2>>a_f>>a_i>>a_o;
+			if (ff(a_f) || ff(a_i) || ff(a_o)) {
+				cout<<"в имени автора недопустимые символы"<<endl;
+				delete[] temp_authors;
+				delete[] authors;
+				delete[] books;
+				return 4;
+				}
 			///проверка на наличие автора
 			bool found=false;
 			author prob(a_f,a_i,a_o,0); ///для того чтобы сравнить
@@ -445,3 +467,4 @@ int main () {
 	delete[] books;
 	return 0;
 	}
+
