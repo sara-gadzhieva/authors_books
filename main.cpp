@@ -203,7 +203,7 @@ class book {
 		
 	};
 
-int book_count(book *books,int n,author &a) {
+int book_count(book *books,int n, const author &a) {
 	int c=0;
 	for(int j=0;j<n;j++){
 		bool flag=false;
@@ -274,7 +274,7 @@ int main () {
 			return 3;
 			}
 			if (ff(f2) || ff(i2) || ff(o2)) {
-				cout<<"в имени автора"<<f2<<" "<<i2<<" "<<o2<<" недопустимые символы"<<endl;
+				cout<<"в ФИО автора "<<f2<<" "<<i2<<" "<<o2<<" недопустимые символы"<<endl;
 				delete[] authors;
 				return 4;
 				}
@@ -397,15 +397,38 @@ int main () {
 				delete[] books;
 				return 5;
 				}
-				
-				
-			    if (strlen(a_f)>=30 || strlen(a_i)>=30 || strlen(a_o)>=30) {
-					cout<<"слишком длинное ФИО автора "<<a_f<<" "<<a_i<<" "<<a_o<<" в books.txt: "<<endl;
-					delete[] temp_authors; 
-					delete[] authors; 
-					delete[] books;
-					return 4;
+			bool error=false;
+			for (int u=0; a_f[u]!='\0';u++) {
+				if (a_f[u]>='0' && a_f[u]<='9') {
+					error=true;
 					}
+				}
+			for (int u=0; a_i[u]!='\0' && !error;u++) {
+				if (a_i[u]>='0' && a_i[u]<='9') {
+					error=true;
+					}
+				}
+			for (int u=0; a_o[u]!='\0' && !error;u++) {
+				if (a_o[u]>='0' && a_o[u]<='9') {
+					error=true;
+					}
+				}
+			if (error) {
+				cout<<"в книге "<<name2<<" меньше авторов, чем указано"<<endl;
+				delete[] temp_authors;
+				delete[] authors;
+				delete[] books;
+				return 6;
+			}
+				
+			if (strlen(a_f)>=30 || strlen(a_i)>=30 || strlen(a_o)>=30) {
+				cout<<"слишком длинное ФИО автора "<<a_f<<" "<<a_i<<" "<<a_o<<" в books.txt: "<<endl;
+				delete[] temp_authors; 
+				delete[] authors; 
+				delete[] books;
+				return 4;
+				}
+				
 			if (ff(a_f) || ff(a_i) || ff(a_o)) {
 				cout<<"в имени автора "<<a_f<<" "<<a_i<<" "<<a_o<<" недопустимые символы"<<endl;
 				delete[] temp_authors;
@@ -424,7 +447,7 @@ int main () {
 					}
 				}	
 			if (!found) {
-				cout<<"автор "<<a_f<<" "<<a_i<<" "<<a_o<<" не найден в файле authors.txt. книга пропущена\n";
+				cout<<"автор "<<a_f<<" "<<a_i<<" "<<a_o<<" не найден в файле authors.txt. книга пропущена"<<endl;
 				no_author=true;
 				}
 		}
@@ -444,7 +467,7 @@ int main () {
 				}
 			}
 		if (dubl_authors) {
-			cout<<"в книге указаны одинаковые авторы. книга пропущена\n";
+			cout<<"в книге "<<name2<<" указаны одинаковые авторы. книга пропущена"<<endl;
 			delete[] temp_authors;
 			continue;
 		}
@@ -464,7 +487,7 @@ int main () {
 				}
 			}
 		if (dubl_name) {
-			cout<<"книга с таким названием уже есть. книга пропущена\n";
+			cout<<"книга с названием "<<name2<<" уже есть. книга пропущена"<<endl;
 			delete[] temp_authors;
 			continue;
 		}
