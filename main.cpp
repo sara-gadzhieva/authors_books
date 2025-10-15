@@ -237,10 +237,9 @@ bool ff(const char* s) {
     for (int t=0; s[t]!='\0';t++) {
         if (s[t]>='0' && s[t]<='9')
             return true;
-    }
+		}
     return false;
-}
-
+	}
 
 int main () {
 	ifstream fin1("authors.txt");
@@ -262,12 +261,13 @@ int main () {
 	
 	author*authors=new author[author_count2];
 	for (int i=0;i<author_count2;i++){
-		char f2[30], i2[30], o2[30]; int g2;
-		if(!(fin1>>f2>>i2>>o2>>g2)) {
+		char f2[30], i2[30], o2[30], god[16]; 
+		if(!(fin1>>f2>>i2>>o2>>god)) {
 			cout<<"файл содержит меньше авторов, чем указано"<<endl;
 			delete [] authors;
 			return 2;
 			}
+
 		if (strlen(f2)>=30 || strlen(i2)>=30 || strlen(o2)>=30) {
 			cout<<"слишком длинное ФИО автора в файле authors.txt"<<endl;
 			delete[] authors;
@@ -275,10 +275,25 @@ int main () {
 			}
 			if (ff(f2) || ff(i2) || ff(o2)) {
 				cout<<"в имени автора недопустимые символы"<<endl;
-				///delete[] temp_authors;
 				delete[] authors;
 				return 4;
 				}
+			bool n=true;;
+				for(int p=0;god[p]!='\0';p++) {
+					if (god[p]<'0' || god[p]>'9') {
+						n=false;;
+						break;
+						}
+					}
+				if(!n) {
+					cout<<"в годе рождения автора некорректные символы "<<god<<endl;
+					delete[] authors;
+					return 4;
+					}
+				int g2=0;
+				for(int p=0; god[p]!='\0';p++) {
+					g2=g2*10+(god[p]-'0');
+					}
 
 		authors[i]=author(f2,i2,o2,g2);
 		}
@@ -467,4 +482,3 @@ int main () {
 	delete[] books;
 	return 0;
 	}
-
