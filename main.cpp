@@ -246,10 +246,19 @@ int main () {
 	}
 	int author_count2;
 	fin1>>author_count2;
+	if (author_count2<=0) {
+		cout<<"некорректное количество авторов"<<endl;
+		return 1;
+		}
+	
 	author*authors=new author[author_count2];
 	for (int i=0;i<author_count2;i++){
 		char f2[30], i2[30], o2[30]; int g2;
-		fin1>>f2>>i2>>o2>>g2;
+		if(!(fin1>>f2>>i2>>o2>>g2)) {
+			cout<<"файл содержит меньше авторов, чем указано"<<endl;
+			delete [] authors;
+			return 2;
+			}
 		authors[i]=author(f2,i2,o2,g2);
 		}
 	
@@ -263,12 +272,22 @@ int main () {
 	
 	int book_count2;
 	fin2>>book_count2;
+	if (book_count2<=0) {
+		cout<<"некорректное количество книг"<<endl;
+		delete [] authors;
+		return 1;
+		}
 	book*books=new book[book_count2];
 	int real_book_count=0;
 	for (int i=0;i<book_count2;i++) {
 		char name2[30];
 		int page_count2, year2, count2;
-		fin2>>name2>>page_count2>>year2>>count2;
+		if(!(fin2>>name2>>page_count2>>year2>>count2)) {
+			cout<<"файл содержит меньше книг, чем указано"<<endl;
+			delete [] authors;
+			delete [] books;
+			return 2;
+			}
 		author* temp_authors=new author[count2];
 		bool no_author=false;        
 		for (int j=0;j<count2;j++) {
