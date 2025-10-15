@@ -51,25 +51,35 @@ class author {
 	///оператор сравнения
 	bool operator==(const author &ob) const {
 		int j=0;
-		while (f[j]!='\0' || ob.f[j]!='\0') {
+		while (f[j]!='\0' && ob.f[j]!='\0') {
 			if (f[j]!=ob.f[j]) {
 				return false;
 				}
 			j++;
 			}	
+		if (f[j]!='\0' || ob.f[j]!='\0') {
+			return false;
+			}
 		j=0;
-		while (i[j]!='\0' || ob.i[j]!='\0') {
+		while (i[j]!='\0' && ob.i[j]!='\0') {
 			if (i[j]!=ob.i[j]) {
 				return false;
 				}
 			j++;
 			}
+		if (i[j]!='\0' || ob.i[j]!='\0') {
+			return false;
+			}
 		j=0;
-		while (o[j]!='\0' || ob.o[j]!='\0') {
+		while (o[j]!='\0' && ob.o[j]!='\0') {
 			if (o[j]!=ob.o[j]) {
 				return false;
+				
 				}
 			j++;
+			}
+		if (o[j]!='\0' || ob.o[j]!='\0') {
+			return false;
 			}
 		return true;
 		}
@@ -428,7 +438,6 @@ int main () {
 				delete[] books;
 				return 4;
 				}
-				
 			if (ff(a_f) || ff(a_i) || ff(a_o)) {
 				cout<<"в имени автора "<<a_f<<" "<<a_i<<" "<<a_o<<" недопустимые символы"<<endl;
 				delete[] temp_authors;
